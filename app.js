@@ -1,5 +1,26 @@
-const input = document.querySelector('#input');
-const resultatDone = document.querySelector('.grid')
+const input = document.querySelector('#search');
+const resultatDone = document.querySelector('.grid');
+const searchBtn = document.getElementById('search-icon');
+const search = document.getElementById('search');
+const searchAnimation = document.getElementById('search-animation');
+const tip = document.getElementById('tip');
+
+searchBtn.addEventListener('click', ()=>{
+    search.style.animation = 'none';
+    search.style.width = '50%';
+    search.style.paddingLeft = '50px';
+    search.style.cursor = 'text';
+    search.focus();
+    searchAnimation.style.animation = 'none';
+    searchAnimation.style.zIndex = "-1";
+});
+ search.addEventListener('blur',()=>{
+    search.style.width = '20px';
+    search.style.paddingLeft = '20px';
+    search.style.cursor = 'pointer';
+    search.value = ""; 
+    searchAnimation.style.animation = 'grow 1s infinite 2s';
+ });
 
 
 input.addEventListener('keypress', (event) => {
@@ -21,24 +42,31 @@ async function searchMeal(input) {
         data.meals.forEach(element => {
             // console.log(element.strMeal)
             console.log(element)
-            const card = document.createElement('div');
+            const card = document.createElement('a');
             card.classList.add('card')
             
-            const img = document.createElement('img');
-            img.src = element.strMealThumb;
+            const img = document.createElement('div');
+            img.style.backgroundImage = `url(${element.strMealThumb})`;
             img.alt = element.strMeal;
+            img.classList.add('card__background')
             card.appendChild(img);
 
             const cardContent = document.createElement('div');
-            cardContent.classList.add('card-content');
+            cardContent.classList.add('card__content');
 
-            const title = document.createElement('h2')
+            const cat = document.createElement('p');
+            cat.innerText = element.strCategory;
+            cat.classList.add('card__category');
+            cardContent.appendChild(cat);
+
+            const title = document.createElement('h3')
             title.innerText = element.strMeal;
-            cardContent.appendChild(title)
+            title.classList.add('card__heading')
+            cardContent.appendChild(title);
 
-            const main = document.querySelector('main');
+            const cardGrid = document.querySelector('.card-grid');
             card.appendChild(cardContent)
-            main.appendChild(card)
+            cardGrid.appendChild(card)
             
         });
     }
